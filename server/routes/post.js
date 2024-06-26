@@ -11,7 +11,7 @@ const upload = require("../utils/upload");
 const router = require("express").Router();
 
 // Route for creating a post
-router.post("/create", postController.createPost);
+router.post("/create/:userId", postController.createPost);
 
 // Route for getting all public posts
 router.get("/public", postController.getPublicPosts);

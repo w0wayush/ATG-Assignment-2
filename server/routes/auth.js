@@ -15,8 +15,8 @@ const router = require("express").Router();
 
 router.post("/login", login);
 router.post("/signup", signup);
-router.post("/setavatar/:id", setAvatar);
-router.post("/me", authenticateJwt, meRoute);
+router.post("/setavatar/:id", authenticateJwt, setAvatar);
+router.get("/me", authenticateJwt, meRoute);
 
 // Route for generating a reset password token
 router.post("/reset-password-token", resetPasswordToken);

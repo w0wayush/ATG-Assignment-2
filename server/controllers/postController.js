@@ -97,7 +97,7 @@ exports.getPostDetails = async (req, res) => {
 exports.getPublicPosts = async (req, res) => {
   try {
     //     console.log("Inside getPublicPosts");
-    const publicPosts = await Post.find({}).populate("user");
+    const publicPosts = await Post.find({ isPublic: true }).populate("user");
 
     res.status(200).json({
       success: true,

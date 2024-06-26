@@ -1,10 +1,12 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const SECRET = process.env.JWT_SECRET;
 
 const authenticateJwt = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
+    // console.log("Token - ", token);
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
         return res.sendStatus(403);
@@ -19,5 +21,4 @@ const authenticateJwt = (req, res, next) => {
 
 module.exports = {
   authenticateJwt,
-  SECRET,
 };
