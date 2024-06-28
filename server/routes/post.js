@@ -3,7 +3,11 @@ const {
   retrieveComments,
 } = require("../controllers/commentController");
 
-const { likePost, unlikePost } = require("../controllers/likeController");
+const {
+  likePost,
+  unlikePost,
+  checkLike,
+} = require("../controllers/likeController");
 const postController = require("../controllers/postController");
 
 const upload = require("../utils/upload");
@@ -24,6 +28,9 @@ router.post("/like", likePost);
 
 // Route to unlike a post
 router.post("/unlike", unlikePost);
+
+//Route to checklike for a particular user on that post
+router.get("/check-like/:postId/:userId", checkLike);
 
 // Route to create a comment
 router.post("/comment", createComment);

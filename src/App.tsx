@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { RecoilRoot } from "recoil";
 import { ToastContainer } from "react-bootstrap";
 import InitUser from "./components/InitUser";
+import UpdatePassword from "./components/UpdatePassword";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<PostSection />} />
+            <Route path="/update-password/:id" element={<UpdatePassword />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>

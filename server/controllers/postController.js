@@ -49,9 +49,11 @@ exports.createPost = async (req, res) => {
       { new: true }
     );
 
+    const populatedPost = await Post.findById(newPost._id).populate("user");
+
     res.status(200).json({
       success: true,
-      data: newPost,
+      data: populatedPost,
       message: "Post created successfully",
     });
   } catch (error) {

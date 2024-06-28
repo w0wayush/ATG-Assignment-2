@@ -14,19 +14,19 @@ exports.resetPasswordToken = async (req, res) => {
       });
     }
     const token = crypto.randomBytes(20).toString("hex");
+    const expirationTime = Date.now() + 3600000;
 
     const updatedDetails = await User.findOneAndUpdate(
       { email: email },
       {
         token: token,
-        resetPasswordExpires: Date.now() + 3600000,
+        resetPasswordExpires: expirationTime,
       },
       { new: true }
     );
     console.log("DETAILS", updatedDetails);
 
-    const url = `http://localhost:3000/update-password/${token}`;
-    //     const url = `https://studynotion-edtech-project.vercel.app/update-password/${token}`;
+    const url = `${process.env.REACT_APP_FRONTEND_URL}/update-password/${token}`;
 
     await mailSender(
       email,
@@ -51,7 +51,8 @@ exports.resetPasswordToken = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   try {
-    const { email, password, confirmPassword, token } = req.body;
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
 
     if (confirmPassword !== password) {
       return res.json({
@@ -66,16 +67,23 @@ exports.resetPassword = async (req, res) => {
         message: "Token is Invalid",
       });
     }
+
+    const currentTime = Date.now();
+    console.log("Current Time:", currentTime);
+    console.log("User details - ", userDetails);
+    console.log("Token Expiration Time:", userDetails.resetPasswordExpires);
+
     if (!(userDetails.resetPasswordExpires > Date.now())) {
       return res.status(403).json({
         success: false,
         message: `Token is Expired, Please Regenerate Your Token`,
       });
     }
+
     const encryptedPassword = await bcrypt.hash(password, 10);
     await User.findOneAndUpdate(
       { token: token },
-      { password: encryptedPassword },
+      { password: encryptedPassword, token: null, resetPasswordExpires: null },
       { new: true }
     );
     res.json({

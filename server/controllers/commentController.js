@@ -1,38 +1,60 @@
 const { default: mongoose } = require("mongoose");
 const Comment = require("../models/commentSchema");
 const Post = require("../models/postSchema");
+const User = require("../models/userSchema");
+const { idText } = require("typescript");
 
 exports.createComment = async (req, res) => {
   try {
-    const { post, user, body } = req.body;
-    //const comment = await Comment.create({user, body});
+    const { post, userId, description } = req.body;
+
+    // Validate user ID
+    const userDetails = await User.findOne({ _id: userId });
+    if (!userDetails) {
+      return res.status(403).json({
+        success: false,
+        message: "Provide correct userId",
+      });
+    }
+
+    // Create new comment
     const comment = new Comment({
       post,
-      user,
-      body,
+      user: userDetails._id, // Store user ID
+      username: userDetails.username, // Store username
+      description,
     });
-    const savedComments = await comment.save();
 
-    //find the post by ID, add the new comment to its comments array
+    // Save comment to database
+    const savedComment = await comment.save();
+
+    // Update post with new comment
     const updatedPost = await Post.findByIdAndUpdate(
       post,
-      { $push: { comments: savedComments._id } },
+      { $push: { comments: savedComment._id } },
       { new: true }
     )
-      .populate("comments") //populate the comments array with comment document
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          model: "User",
+        },
+      })
+      .populate("user")
       .exec();
 
     res.status(200).json({
-      post: updatedPost,
       success: true,
       message: "Successfully created comment",
+      comment: savedComment, // Return the saved comment data
+      post: updatedPost,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: error.message,
-      data: "Internal Server Error",
+      message: "Internal Server Error",
     });
   }
 };
@@ -63,7 +85,7 @@ exports.retrieveComments = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Successfully fetched all comments",
-      data: comments,
+      comments: comments,
     });
   } catch (error) {
     console.error(error);

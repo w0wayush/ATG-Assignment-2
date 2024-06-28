@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const SECRET = process.env.JWT_SECRET;
 const jwt = require("jsonwebtoken");
+const { avatarGenerator } = require("../utils/avatarGenerator");
 
 module.exports.meRoute = async (req, res, next) => {
   try {
@@ -37,8 +38,16 @@ module.exports.login = async (req, res, next) => {
       expiresIn: "1h",
     });
 
+    const imgLink = avatarGenerator(email?.split("@")[0]);
+
+    const userDetails = await User.findByIdAndUpdate(
+      user._id,
+      { avatarImage: imgLink, isAvatarImageSet: true },
+      { new: true }
+    );
+
     delete user.password;
-    return res.json({ status: true, token, user });
+    return res.json({ status: true, token, userDetails });
   } catch (ex) {
     next(ex);
   }
