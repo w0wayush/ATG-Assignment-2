@@ -28,7 +28,7 @@ const CreatePost = ({ show, handleClose }: any) => {
       );
 
       console.log("Post created:", response.data);
-      handleClose();
+      handleClose(); // Close the modal on successful post creation
     } catch (error) {
       console.error("Error creating post:", error);
       setError("Failed to create post. Please try again."); // Handle error state or display error message to user
@@ -37,11 +37,7 @@ const CreatePost = ({ show, handleClose }: any) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header
-        closeButton
-        closeVariant="white"
-        className="bg-black text-white"
-      >
+      <Modal.Header closeButton className="bg-black text-white">
         <Modal.Title>Create New Post</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-pattern p-4">
@@ -74,9 +70,6 @@ const CreatePost = ({ show, handleClose }: any) => {
             />
           </div>
           <div className="mb-3">
-            {/* <label htmlFor="postDescription" className="form-label">
-              Description
-            </label> */}
             <textarea
               placeholder="Description of Post"
               className="input form-control"
@@ -88,12 +81,9 @@ const CreatePost = ({ show, handleClose }: any) => {
             />
           </div>
           <div className="mb-3">
-            {/* <label htmlFor="postImageLink" className="form-label">
-              Image Link
-            </label> */}
             <input
               placeholder="Image Link"
-              className="input form-control "
+              className="input form-control"
               type="text"
               id="postImageLink"
               value={imageLink}
@@ -105,7 +95,6 @@ const CreatePost = ({ show, handleClose }: any) => {
       </Modal.Body>
       <Modal.Footer className="bg-black flex justify-center">
         <button className="create-post" onClick={handleCreatePost}>
-          {" "}
           I'M READY
         </button>
         <Button variant="secondary" onClick={handleClose}>
