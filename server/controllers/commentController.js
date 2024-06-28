@@ -2,7 +2,6 @@ const { default: mongoose } = require("mongoose");
 const Comment = require("../models/commentSchema");
 const Post = require("../models/postSchema");
 const User = require("../models/userSchema");
-const { idText } = require("typescript");
 
 exports.createComment = async (req, res) => {
   try {
