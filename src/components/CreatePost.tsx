@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { REACT_APP_BASE_URL } from "../config";
@@ -9,7 +9,7 @@ const CreatePost = ({ show, handleClose }: any) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageLink, setImageLink] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
   const currentUserId = useRecoilValue(userId);
   const [error, setError] = useState("");
 
@@ -28,7 +28,8 @@ const CreatePost = ({ show, handleClose }: any) => {
       );
 
       console.log("Post created:", response.data);
-      handleClose(); // Close the modal on successful post creation
+      handleClose();
+      window.location.reload();
     } catch (error) {
       console.error("Error creating post:", error);
       setError("Failed to create post. Please try again."); // Handle error state or display error message to user
@@ -37,7 +38,11 @@ const CreatePost = ({ show, handleClose }: any) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton className="bg-black text-white">
+      <Modal.Header
+        closeButton
+        closeVariant="white"
+        className="bg-black text-white"
+      >
         <Modal.Title>Create New Post</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-pattern p-4">
@@ -73,7 +78,6 @@ const CreatePost = ({ show, handleClose }: any) => {
             <textarea
               placeholder="Description of Post"
               className="input form-control"
-              type="text"
               id="postDescription"
               value={description}
               rows={3}
