@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import avatarGenerator from "../utils/avatarGenerator";
 import dotenv from "dotenv";
 dotenv.config();
-import { JWT_SECRET } from "../config";
 
 interface MeRequest extends Request {
   user: {
