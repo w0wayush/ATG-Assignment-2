@@ -44,6 +44,10 @@ function InitUser() {
     };
 
     init();
+    // Call every 10 seconds
+    const intervalId = setInterval(init, 10000);
+
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
   }, [setUser]);
 
   return null; // This component doesn't render anything visible

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
-import { REACT_APP_BASE_URL } from "../config";
 import { useRecoilValue } from "recoil";
 import { userId } from "../store/selectors/user";
 
@@ -23,7 +22,9 @@ const CreatePost = ({ show, handleClose }: any) => {
       };
 
       const response = await axios.post(
-        `${REACT_APP_BASE_URL}/api/posts/create/${currentUserId}`,
+        `${
+          import.meta.env.VITE_APP_BASE_URL
+        }/api/posts/create/${currentUserId}`,
         postData
       );
 

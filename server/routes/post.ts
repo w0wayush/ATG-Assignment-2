@@ -9,6 +9,7 @@ import {
   createPost,
   getPublicPosts,
   getPostDetails,
+  getUsersAllPost,
 } from "../controllers/postController";
 
 import upload from "../utils/upload";
@@ -39,5 +40,8 @@ router.post("/comment", createComment);
 
 // Route to retrieve comments for a post
 router.get("/comments/:postId", retrieveComments);
+
+// Route to retrieve users all post for profile section
+router.get("/get-user-posts/:userId", getUsersAllPost);
 
 export default router;

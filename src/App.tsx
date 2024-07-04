@@ -11,10 +11,11 @@ import InitUser from "./components/InitUser";
 import UpdatePassword from "./components/UpdatePassword";
 //@ts-ignore
 import OpenRoute from "./components/OpenRoute";
+import ProfileSection from "./pages/ProfileSection";
 
 function App() {
   return (
-    <div>
+    <div className="min-h-screen bg-pattern">
       <RecoilRoot>
         <ToastContainer
           position="bottom-right"
@@ -30,10 +31,10 @@ function App() {
         />
         <BrowserRouter>
           <Navbar />
-          <InitUser />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<PostSection />} />
+            <Route path="/profile" element={<ProfileSection />} />
             <Route
               path="/update-password/:token"
               element={
@@ -43,6 +44,7 @@ function App() {
               }
             />
           </Routes>
+          <InitUser />
         </BrowserRouter>
       </RecoilRoot>
     </div>

@@ -120,3 +120,42 @@ export const getPublicPosts = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUsersAllPost = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    // console.log("User id - ", userId);
+    if (!userId) {
+      return res.status(403).json({
+        message: "Please Provide userID",
+        success: false,
+      });
+    }
+
+    const checkUser = await User.findById(userId);
+    // console.log("User presend - ", checkUser);
+    if (!checkUser) {
+      return res.status(400).json({
+        message: "User doesn't exist. Please signup first",
+        success: false,
+      });
+    }
+
+    const userPosts = await User.findById(userId).populate("posts").exec();
+
+    // console.log("Users posts - ", userPosts);
+
+    return res.status(200).json({
+      message: "User's posts fetched successfully",
+      success: true,
+      user: checkUser,
+      posts: userPosts?.posts,
+    });
+  } catch (error) {
+    console.error("Error fetching user's posts:", error);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
