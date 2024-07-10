@@ -1,6 +1,6 @@
 # w0wUnity - Social Media
 
-![w0wUnity Logo](./public/Logo.png)
+![w0wUnity Logo](./src/assets/author.png)
 
 ## Introduction
 
